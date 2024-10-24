@@ -6,7 +6,13 @@
 
     <groupId>com.icecream</groupId>
     <artifactId>helplog-job</artifactId>
-    <version>1.4</version>
+    <version>${helplog-version}</version>
+
+    <parent>
+        <groupId>com.icecream</groupId>
+        <artifactId>helplog-parent</artifactId>
+        <version>2.0</version>
+    </parent>
 
     <properties>
         <xxl-job.version>2.3.0</xxl-job.version>
@@ -22,7 +28,7 @@
         <dependency>
             <groupId>com.icecream</groupId>
             <artifactId>helplog</artifactId>
-            <version>1.6</version>
+            <version>${helplog-version}</version>
         </dependency>
         <dependency>
             <groupId>com.xuxueli</groupId>
