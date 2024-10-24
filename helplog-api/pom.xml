@@ -6,7 +6,7 @@
 
     <groupId>com.icecream</groupId>
     <artifactId>helplog-api</artifactId>
-    <version>2.1</version>
+    <version>2.2</version>
 
 
     <!--发布公共包仓库地址， snapshot为开发测试用，release为生产专用；如果<version>以SNAPSHOT结尾会自动打到snapshot仓库，反之亦然-->
@@ -22,22 +22,5 @@
             <url>https://maven.jtexpress.com.cn/nexus/content/repositories/releases</url>
         </repository>
     </distributionManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
