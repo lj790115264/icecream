@@ -6,13 +6,8 @@
 
     <groupId>com.icecream</groupId>
     <artifactId>helplog-api</artifactId>
-    <version>${helplog-version}</version>
+    <version>1.4</version>
 
-    <parent>
-        <groupId>com.icecream</groupId>
-        <artifactId>helplog-parent</artifactId>
-        <version>2.0</version>
-    </parent>
 
     <!--仓库配置-->
     <repositories>
