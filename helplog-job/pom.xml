@@ -37,4 +37,84 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
+    <!--仓库配置-->
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun maven</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <!-- snapshot为开发测试用，release为生产专用；如果<version>以SNAPSHOT结尾会自动打到snapshot仓库，反之亦然 -->
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Releases</name>
+            <url>https://maven.jtexpress.com.cn/nexus/content/repositories/releases</url>
+            <layout>default</layout>
+        </repository>
+    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>snapshots</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>snapshots</id>
+                    <name>Snapshots</name>
+                    <url>https://maven.jtexpress.com.cn/nexus/content/repositories/snapshots</url>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>alphas</id>
+            <repositories>
+                <repository>
+                    <id>Alpha</id>
+                    <name>Alpha</name>
+                    <url>https://maven.jtexpress.com.cn/nexus/content/repositories/Alpha</url>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>betas</id>
+            <repositories>
+                <repository>
+                    <id>Beta</id>
+                    <name>Beta</name>
+                    <url>https://maven.jtexpress.com.cn/nexus/content/repositories/Beta</url>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>releases</id>
+            <repositories>
+                <repository>
+                    <id>releases</id>
+                    <name>Releases</name>
+                    <url>https://maven.jtexpress.com.cn/nexus/content/repositories/releases</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
 </project>
