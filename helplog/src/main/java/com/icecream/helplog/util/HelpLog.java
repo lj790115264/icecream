@@ -38,7 +38,9 @@ public class HelpLog {
 
         Stack stack = new Stack();
         stack.push(uuid);
-        MDC.put(traceId, uuid);
+        if (null != traceId) {
+            MDC.put(traceId, uuid);
+        }
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -64,7 +66,12 @@ public class HelpLog {
             }
         }
 
-        String logMsg = StrUtil.format(" {} {} ", getStackInfo(), msg);
+        String logMsg;
+        if (traceId == null) {
+            logMsg = StrUtil.format("{} {} {} ",joinKeyInfo(), getStackInfo(), msg);
+        } else {
+            logMsg = StrUtil.format(" {} {} ", getStackInfo(), msg);
+        }
 
         log.info(logMsg, var2);
     }
@@ -88,7 +95,12 @@ public class HelpLog {
             }
         }
 
-        String logMsg = StrUtil.format(" {} {} ", getStackInfo(), msg);
+        String logMsg;
+        if (traceId == null) {
+            logMsg = StrUtil.format("{} {} {} ",joinKeyInfo(), getStackInfo(), msg);
+        } else {
+            logMsg = StrUtil.format(" {} {} ", getStackInfo(), msg);
+        }
 
         log.error(logMsg, var2);
     }
@@ -124,7 +136,10 @@ public class HelpLog {
         }
 
         logLocal.get().getStack().push(keyInfo);
-        MDC.put(traceId, joinKeyInfo());
+
+        if (null != traceId) {
+            MDC.put(traceId, joinKeyInfo());
+        }
 
         logLocal.get().getKeyInfoMillTimeMap().put(keyInfo, System.currentTimeMillis());
         jobLog("{} {}",  joinKeyInfo(), getStackInfo());
@@ -328,8 +343,10 @@ public class HelpLog {
 
 //            jobLog("{} {} 执行时长 {}",  joinKeyInfo(), getStackInfo(), runTime);
 //            info("执行时长 {}", runTime);
+            if (null != traceId) {
+                MDC.put(traceId, joinKeyInfo());
+            }
 
-            MDC.put(traceId, joinKeyInfo());
         }
     }
 
@@ -365,7 +382,9 @@ public class HelpLog {
             }
 
             String pop = stack.pop();
-            MDC.put(traceId, joinKeyInfo());
+            if (null != traceId) {
+                MDC.put(traceId, joinKeyInfo());
+            }
             if (!pop.equals(keyInfo)) {
                 del(keyInfo);
             }
@@ -381,7 +400,9 @@ public class HelpLog {
     public static void replaceHelper(Stack stack) {
         LogObj logObj = logLocal.get()
                 .setStack(stack);
-        MDC.put(traceId, joinKeyInfo());
+        if (null != traceId) {
+            MDC.put(traceId, joinKeyInfo());
+        }
     }
 
 //    public static String defaultLogRequestId() {
