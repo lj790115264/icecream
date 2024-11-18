@@ -48,6 +48,13 @@ public class HelpLog {
     });
 
     /**
+     * 不适用额外的traceId
+     */
+    public static void noTraceId() {
+        traceId = null;
+    }
+
+    /**
      * 输出普通信息
      *
      * @param msg 日志文本
