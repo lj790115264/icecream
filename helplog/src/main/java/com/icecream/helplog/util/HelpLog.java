@@ -17,6 +17,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.Stack;
@@ -44,7 +46,9 @@ public class HelpLog {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
-        return new LogObj().setStack(stack).setStopWatch(stopWatch).setKeyInfoMillTimeMap(new ConcurrentHashMap<>());
+        return new LogObj().setStack(stack).setStopWatch(stopWatch)
+                .setPosMap(new LinkedHashMap<>())
+                .setKeyInfoMillTimeMap(new ConcurrentHashMap<>());
     });
 
     /**
@@ -348,6 +352,42 @@ public class HelpLog {
         add(keyInfo);
     }
 
+    public static void addFocus(String keyInfo, String pos) {
+
+        Map<String, String> posMap = logLocal.get().getPosMap();
+        String lastKeyInfo = posMap.get(pos);
+        if (null != lastKeyInfo) {
+
+            removeAfterKey(posMap, pos);
+            del(lastKeyInfo);
+        }
+        add(keyInfo);
+        posMap.put(pos, keyInfo);
+    }
+
+    public static void removeAfterKey(Map<String, String> map, String key) {
+        boolean found = false;
+        Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> entry = iterator.next();
+            if (found) {
+                iterator.remove();
+            } else if (entry.getKey().equals(key)) {
+                found = true;
+            }
+        }
+    }
+
+    public static void delFocus(String pos) {
+
+        Map<String, String> posMap = logLocal.get().getPosMap();
+        String lastKeyInfo = posMap.get(pos);
+        if (null != lastKeyInfo) {
+            del(lastKeyInfo);
+            posMap.remove(pos);
+        }
+    }
+
     public static void del() {
 
         Stack<String> stack = logLocal.get()
@@ -480,7 +520,8 @@ public class HelpLog {
         StopWatch stopWatch = logLocal.get().getStopWatch();
         stopWatch.stop();
 //        info("执行总时长 {}", stopWatch.getTotalTimeMillis());
-
+        logLocal.get().getKeyInfoMillTimeMap().clear();
+        logLocal.get().getPosMap().clear();
         logLocal.remove();
     }
 
@@ -490,5 +531,6 @@ public class HelpLog {
         Stack<String> stack;
         StopWatch stopWatch;
         Map<String, Long> keyInfoMillTimeMap;
+        Map<String, String> posMap;
     }
 }
