@@ -113,13 +113,13 @@ public class AnnotationProcessor extends AbstractProcessor {
 
                             JCTree.JCExpressionStatement addLog = treeMaker.Exec( // 创建可执行语句
                                     treeMaker.Apply( // 创建JCMethodInvocation
-                                            List.of(memberAccess("java.lang.String")),
+                                            List.of(memberAccess("java.lang.Object")),
                                             memberAccess("com.icecream.helplog.util.HelpLog.add"),
                                             List.of(treeMaker.Ident(logKeyName))));
 
                             JCTree.JCExpressionStatement delLog = treeMaker.Exec( // 创建可执行语句
                                     treeMaker.Apply( // 创建JCMethodInvocation
-                                            List.of(memberAccess("java.lang.String")),
+                                            List.of(memberAccess("java.lang.Object")),
                                             memberAccess("com.icecream.helplog.util.HelpLog.del"),
                                             List.of(treeMaker.Ident(logKeyName))));
 

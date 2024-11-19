@@ -131,6 +131,19 @@ public class HelpLog {
         return stacks[1];
     }
 
+    public static void add(Object o) {
+        if (o instanceof String) {
+            add((String) o);
+        } else if (o instanceof  LocalDate) {
+            add((LocalDate) o);
+        }
+    }
+
+    public static void add(LocalDate date) {
+
+        String keyInfo = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        add(keyInfo);
+    }
 
     /**
      * 添加关键信息
@@ -362,6 +375,19 @@ public class HelpLog {
         for (JobLogService jobLogService : serviceLoaders) {
             jobLogService.log(appendLogPattern, appendLogArguments);
         }
+    }
+
+    public static void del(Object o) {
+        if (o instanceof String) {
+            del((String) o);
+        } else if (o instanceof  LocalDate) {
+            del((LocalDate) o);
+        }
+    }
+
+    public static void del(LocalDate date) {
+        String keyInfo = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        del(keyInfo);
     }
 
     /**
