@@ -11,6 +11,10 @@ import lombok.Getter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.StopWatch;
 
 import java.time.LocalDate;
@@ -43,10 +47,9 @@ public class HelpLog {
         if (null != traceId) {
             MDC.put(traceId, uuid);
         }
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
 
-        return new LogObj().setStack(stack).setStopWatch(stopWatch)
+
+        return new LogObj().setStack(stack)
                 .setPosMap(new LinkedHashMap<>())
                 .setKeyInfoMillTimeMap(new ConcurrentHashMap<>());
     });
@@ -133,6 +136,23 @@ public class HelpLog {
             }
         }
         return stacks[1];
+    }
+
+
+    public static void add(Object o, String spelExp) {
+
+        if (ObjectUtil.isEmpty(spelExp)) {
+            add(o);
+            return;
+        }
+
+        StandardEvaluationContext context = new StandardEvaluationContext(o);
+
+        ExpressionParser parser = new SpelExpressionParser();
+        Expression expression = parser.parseExpression(spelExp);
+        String result = expression.getValue(context, String.class);
+
+        add(result);
     }
 
     public static void add(Object o) {
@@ -399,14 +419,9 @@ public class HelpLog {
         Long startTime = logLocal.get().getKeyInfoMillTimeMap().get(pop);
         if (null != startTime) {
 
-//            Long runTime = System.currentTimeMillis() - startTime;
-
-//            jobLog("{} {} 执行时长 {}",  joinKeyInfo(), getStackInfo(), runTime);
-//            info("执行时长 {}", runTime);
             if (null != traceId) {
                 MDC.put(traceId, joinKeyInfo());
             }
-
         }
     }
 
@@ -415,6 +430,22 @@ public class HelpLog {
         for (JobLogService jobLogService : serviceLoaders) {
             jobLogService.log(appendLogPattern, appendLogArguments);
         }
+    }
+
+    public static void del(Object o, String spelExp) {
+
+        if (ObjectUtil.isEmpty(spelExp)) {
+            del(o);
+            return;
+        }
+
+        StandardEvaluationContext context = new StandardEvaluationContext(o);
+
+        ExpressionParser parser = new SpelExpressionParser();
+        Expression expression = parser.parseExpression(spelExp);
+        String result = expression.getValue(context, String.class);
+
+        del(result);
     }
 
     public static void del(Object o) {
@@ -478,14 +509,6 @@ public class HelpLog {
         }
     }
 
-//    public static String defaultLogRequestId() {
-//
-//        String uuid = UUID.randomUUID()
-//                .toString()
-//                .replaceAll("-", "");
-//        return uuid;
-//    }
-
     public static String joinKeyInfo() {
 
         return CollUtil.join(logLocal.get().getStack(), "-");
@@ -517,9 +540,6 @@ public class HelpLog {
 
     public static void remove() {
 
-        StopWatch stopWatch = logLocal.get().getStopWatch();
-        stopWatch.stop();
-//        info("执行总时长 {}", stopWatch.getTotalTimeMillis());
         logLocal.get().getKeyInfoMillTimeMap().clear();
         logLocal.get().getPosMap().clear();
         logLocal.remove();
@@ -529,7 +549,6 @@ public class HelpLog {
     @Accessors(chain = true)
     public static class LogObj {
         Stack<String> stack;
-        StopWatch stopWatch;
         Map<String, Long> keyInfoMillTimeMap;
         Map<String, String> posMap;
     }

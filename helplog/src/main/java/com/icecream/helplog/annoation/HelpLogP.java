@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.SOURCE)
 public @interface HelpLogP {
-
+    String value() default "";
 }

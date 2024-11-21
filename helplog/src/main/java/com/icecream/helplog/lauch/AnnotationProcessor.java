@@ -66,6 +66,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         this.elementUtils = (JavacElements) processingEnv.getElementUtils();
     }
     String _HELP_LOG_TMP_KEY33 = "_HELP_LOG_TMP_KEY33";
+    String _HELP_LOG_TMP_KEY55 = "_HELP_LOG_TMP_KE55";
 
 
     @Override
@@ -83,13 +84,19 @@ public class AnnotationProcessor extends AbstractProcessor {
 
                             Boolean noHelpLogP = true;
                             Name logKeyName = null;
+                            Name splLogKeyName = null;
+
                             JCTree.JCVariableDecl logKeyVar = null;
+                            JCTree.JCVariableDecl splLogKeyVar = null;
                             for (VariableElement parameter : parameters) {
                                 // 获取方法参数上的注解信息
-                                if (parameter.getAnnotation(HelpLogP.class) != null) {
+                                HelpLogP helpLogPAno = parameter.getAnnotation(HelpLogP.class);
+                                if (helpLogPAno != null) {
                                     noHelpLogP = false;
                                     logKeyName = getNameFromString(parameter.getSimpleName().toString());
-
+                                    String spelExpress = helpLogPAno.value();
+                                    splLogKeyVar = createVarDef(treeMaker.Modifiers(0), _HELP_LOG_TMP_KEY55, memberAccess("java.lang.String"), treeMaker.Literal(spelExpress));
+                                    splLogKeyName = splLogKeyVar.name;
                                 }
                             }
                             // 形参上没有注解
@@ -110,22 +117,45 @@ public class AnnotationProcessor extends AbstractProcessor {
 
                             // pos的作用无法体会
                             treeMaker.pos = jcMethodDecl.pos;
+                            JCTree.JCExpressionStatement addLog;
+                            JCTree.JCExpressionStatement delLog;
+                            if (null != splLogKeyName) {
+                                addLog = treeMaker.Exec( // 创建可执行语句
+                                        treeMaker.Apply( // 创建JCMethodInvocation
+                                                List.of(memberAccess("java.lang.Object"), memberAccess("java.lang.String")),
+                                                memberAccess("com.icecream.helplog.util.HelpLog.add"),
+                                                List.of(treeMaker.Ident(logKeyName), treeMaker.Ident(splLogKeyName))));
 
-                            JCTree.JCExpressionStatement addLog = treeMaker.Exec( // 创建可执行语句
-                                    treeMaker.Apply( // 创建JCMethodInvocation
-                                            List.of(memberAccess("java.lang.Object")),
-                                            memberAccess("com.icecream.helplog.util.HelpLog.add"),
-                                            List.of(treeMaker.Ident(logKeyName))));
-
-                            JCTree.JCExpressionStatement delLog = treeMaker.Exec( // 创建可执行语句
-                                    treeMaker.Apply( // 创建JCMethodInvocation
-                                            List.of(memberAccess("java.lang.Object")),
-                                            memberAccess("com.icecream.helplog.util.HelpLog.del"),
-                                            List.of(treeMaker.Ident(logKeyName))));
+                                delLog = treeMaker.Exec( // 创建可执行语句
+                                        treeMaker.Apply( // 创建JCMethodInvocation
+                                                List.of(memberAccess("java.lang.Object"), memberAccess("java.lang.String")),
+                                                memberAccess("com.icecream.helplog.util.HelpLog.del"),
+                                                List.of(treeMaker.Ident(logKeyName), treeMaker.Ident(splLogKeyName))));
+                            } else {
+                                addLog = treeMaker.Exec( // 创建可执行语句
+                                        treeMaker.Apply( // 创建JCMethodInvocation
+                                                List.of(memberAccess("java.lang.Object")),
+                                                memberAccess("com.icecream.helplog.util.HelpLog.add"),
+                                                List.of(treeMaker.Ident(logKeyName))));
+                                delLog = treeMaker.Exec( // 创建可执行语句
+                                        treeMaker.Apply( // 创建JCMethodInvocation
+                                                List.of(memberAccess("java.lang.Object")),
+                                                memberAccess("com.icecream.helplog.util.HelpLog.del"),
+                                                List.of(treeMaker.Ident(logKeyName))));
+                            }
 
                             JCTree.JCBlock finallyBlock = treeMaker.Block(0, List.of(delLog));
 
-                            if (null != logKeyVar) {
+                            if (null != splLogKeyVar) {
+                                // 更新方法体
+                                jcMethodDecl.body = treeMaker.Block(0,
+                                        List.of(
+                                                splLogKeyVar,
+                                                addLog,
+                                                treeMaker.Try(jcMethodDecl.body,
+                                                        List.nil(), finallyBlock)
+                                        ));
+                            } else if (null != logKeyVar) {
                                 // 更新方法体
                                 jcMethodDecl.body = treeMaker.Block(0,
                                         List.of(
@@ -142,10 +172,9 @@ public class AnnotationProcessor extends AbstractProcessor {
                                                 treeMaker.Try(jcMethodDecl.body,
                                                         List.nil(), finallyBlock)
                                         ));
+
                             }
                         }
-
-
                     });
         }
 
