@@ -13,7 +13,7 @@
        <module>helplog-api</module>
        <module>helplog</module>
        <module>helplog-job</module>
-       <module>devurl</module>
-       <module>devurldb</module>
+       <module>dev-url</module>
+       <module>dev-url-db</module>
    </modules>
 </project>
