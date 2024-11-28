@@ -99,4 +99,19 @@
             </plugin>
         </plugins>
     </build>
+
+    <!--发布公共包仓库地址， snapshot为开发测试用，release为生产专用；如果<version>以SNAPSHOT结尾会自动打到snapshot仓库，反之亦然-->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>snapshots</name>
+            <url>https://maven.jtexpress.com.cn/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>releases</id>
+            <name>Releases</name>
+            <url>https://maven.jtexpress.com.cn/nexus/content/repositories/releases</url>
+        </repository>
+    </distributionManagement>
+
 </project>
