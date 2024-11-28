@@ -13,5 +13,7 @@
        <module>helplog-api</module>
        <module>helplog</module>
        <module>helplog-job</module>
+       <module>devurl</module>
+       <module>devurldb</module>
    </modules>
 </project>
