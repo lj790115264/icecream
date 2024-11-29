@@ -113,5 +113,29 @@
             <url>https://maven.jtexpress.com.cn/nexus/content/repositories/releases</url>
         </repository>
     </distributionManagement>
-
+    <profiles>
+        <profile>
+            <id>snapshots</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>snapshots</id>
+                    <name>Snapshots</name>
+                    <url>https://maven.jtexpress.com.cn/nexus/content/repositories/snapshots</url>
+                </repository>
+            </repositories>
+        </profile>
+        <profile>
+            <id>releases</id>
+            <repositories>
+                <repository>
+                    <id>releases</id>
+                    <name>Releases</name>
+                    <url>https://maven.jtexpress.com.cn/nexus/content/repositories/releases</url>
+                </repository>
+            </repositories>
+        </profile>
+    </profiles>
 </project>
