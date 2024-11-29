@@ -11,6 +11,7 @@ import com.yl.mapper.DevUrlTableMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -36,7 +37,7 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
     public void doing() {
 
         String uri = DevUrlFilter.urlThreadLocal.get();
-        Set<String> tables = DevUrlFilter.tableThreadLocal.get();
+        List<String> tables = new ArrayList<>(DevUrlFilter.tableThreadLocal.get());
         DevUrlFilter.tableThreadLocal.remove();
         List<String> urlCrosses = DevUrlFilter.urlCrossThreadLocal.get();
         String crossPath = JsonUtil.toJson(urlCrosses);
