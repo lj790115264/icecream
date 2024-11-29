@@ -1,10 +1,10 @@
 package com.yl.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.yl.DevUrlFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import com.yl.DevUrlFilter;
 import com.yl.entity.DevUrlTable;
 import com.yl.mapper.DevUrlTableMapper;
 import org.springframework.stereotype.Service;
@@ -35,12 +35,12 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
 
         String uri = DevUrlFilter.urlThreadLocal.get();
         Set<String> tables = DevUrlFilter.tableThreadLocal.get();
+        DevUrlFilter.tableThreadLocal.remove();
         log.info("header {} tables {}", uri, tables);
         for (String table : tables) {
             String finalUri = uri;
             executor.submit(() -> self.save(finalUri, table));
         }
-        DevUrlFilter.tableThreadLocal.remove();
     }
 
     public void save(String uri, String table) {

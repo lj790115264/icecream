@@ -1,5 +1,6 @@
 package com.yl.config.db;
 
+import com.yl.DevUrlFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -9,7 +10,6 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Plugin;
 import org.apache.ibatis.plugin.Signature;
 import org.apache.ibatis.session.ResultHandler;
-import com.yl.DevUrlFilter;
 
 import java.sql.Statement;
 import java.util.Properties;
