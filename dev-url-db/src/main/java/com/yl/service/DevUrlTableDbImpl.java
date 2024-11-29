@@ -39,7 +39,7 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
         Set<String> tables = DevUrlFilter.tableThreadLocal.get();
         DevUrlFilter.tableThreadLocal.remove();
         List<String> urlCrosses = DevUrlFilter.urlCrossThreadLocal.get();
-        String crossPath = JsonUtil.toJson(urlCrosses);
+        String crossPath = JsonUtil.toJson(urlCrosses).substring(0, 2000);
         DevUrlFilter.urlCrossThreadLocal.remove();
 
         log.info("header {} tables {}", uri, tables);
