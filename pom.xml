@@ -10,9 +10,9 @@
     <packaging>pom</packaging>
 
    <modules>
-<!--       <module>helplog-api</module>-->
-<!--       <module>helplog</module>-->
-<!--       <module>helplog-job</module>-->
+       <module>helplog-api</module>
+       <module>helplog</module>
+       <module>helplog-job</module>
        <module>dev-url-common</module>
        <module>dev-url</module>
        <module>dev-url-db</module>
