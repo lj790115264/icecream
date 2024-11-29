@@ -19,5 +19,6 @@ public class DevUrlTable {
 
     private String uri;
     private String tables;
+    private String crossPath;
     private LocalDateTime createTime;
 }

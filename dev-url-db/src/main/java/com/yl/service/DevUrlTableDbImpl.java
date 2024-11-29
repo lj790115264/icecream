@@ -2,6 +2,7 @@ package com.yl.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yl.DevUrlFilter;
+import com.yl.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -10,6 +11,7 @@ import com.yl.mapper.DevUrlTableMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -36,18 +38,23 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
         String uri = DevUrlFilter.urlThreadLocal.get();
         Set<String> tables = DevUrlFilter.tableThreadLocal.get();
         DevUrlFilter.tableThreadLocal.remove();
+        List<String> urlCrosses = DevUrlFilter.urlCrossThreadLocal.get();
+        String crossPath = JsonUtil.toJson(urlCrosses);
+        DevUrlFilter.urlCrossThreadLocal.remove();
+
         log.info("header {} tables {}", uri, tables);
         for (String table : tables) {
             String finalUri = uri;
-            executor.submit(() -> self.save(finalUri, table));
+            executor.submit(() -> self.save(finalUri, table, crossPath));
         }
     }
 
-    public void save(String uri, String table) {
+    public void save(String uri, String table, String crossPath) {
 
         DevUrlTable devUrlTable = new DevUrlTable();
         devUrlTable.setUri(uri);
         devUrlTable.setTables(table);
+        devUrlTable.setCrossPath(crossPath);
         devUrlTable.setCreateTime(LocalDateTime.now());
         Integer count = devUrlTableMapper
                 .selectCount(new LambdaQueryWrapper<DevUrlTable>().eq(DevUrlTable::getUri, uri)
