@@ -63,6 +63,7 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
         Integer count = devUrlTableMapper
                 .selectCount(new LambdaQueryWrapper<DevUrlTable>().eq(DevUrlTable::getUri, uri)
                         .eq(DevUrlTable::getTables, table));
+        log.info("devUrlTable {} count {}", devUrlTable, count);
         if (count == 0) {
             devUrlTableMapper.insert(devUrlTable);
         }
