@@ -3,6 +3,7 @@ package com.yl.service;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.yl.DevUrlFilter;
 import com.yl.JsonUtil;
+import com.yl.id.IdGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -33,6 +34,9 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
     @Autowired
     private DevUrlTableMapper devUrlTableMapper;
 
+    @Autowired
+    private IdGenerator<Long> idGenerator;
+
     @Override
     public void doing() {
 
@@ -57,6 +61,7 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
     public void save(String uri, String table, String crossPath) {
 
         DevUrlTable devUrlTable = new DevUrlTable();
+        devUrlTable.setId(idGenerator.generate());
         devUrlTable.setUri(uri);
         devUrlTable.setTables(table);
         devUrlTable.setCrossPath(crossPath);

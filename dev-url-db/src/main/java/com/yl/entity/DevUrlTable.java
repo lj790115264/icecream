@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @TableName("DEV_URL_TABLE")
 public class DevUrlTable {
 
-    @TableId(value = "id", type = IdType.ID_WORKER)
+    @TableId(value = "id", type = IdType.INPUT)
     private Long id;
 
     private String uri;
