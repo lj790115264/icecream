@@ -60,11 +60,11 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
         devUrlTable.setTables(table);
         devUrlTable.setCrossPath(crossPath);
         devUrlTable.setCreateTime(LocalDateTime.now());
-        Integer count = devUrlTableMapper
+        Number count = devUrlTableMapper
                 .selectCount(new LambdaQueryWrapper<DevUrlTable>().eq(DevUrlTable::getUri, uri)
                         .eq(DevUrlTable::getTables, table));
         log.info("devUrlTable {} count {}", devUrlTable, count);
-        if (count == 0) {
+        if (count.equals(0)) {
             devUrlTableMapper.insert(devUrlTable);
         }
     }
