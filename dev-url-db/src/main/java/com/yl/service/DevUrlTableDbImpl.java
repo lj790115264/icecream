@@ -34,9 +34,6 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
     @Autowired
     private DevUrlTableMapper devUrlTableMapper;
 
-    @Autowired
-    private IdGenerator<Long> idGenerator;
-
     @Override
     public void doing() {
 
