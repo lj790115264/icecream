@@ -60,9 +60,7 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
         devUrlTable.setTables(table);
         devUrlTable.setCrossPath(crossPath);
         devUrlTable.setCreateTime(LocalDateTime.now());
-        Number count = devUrlTableMapper
-                .selectCount(new QueryWrapper<DevUrlTable>().eq("uri", uri)
-                        .eq("tables", table));
+        Number count = devUrlTableMapper.count(uri, table);
         log.info("devUrlTable {} count {}", devUrlTable, count);
         if (count.equals(0)) {
             devUrlTableMapper.insert(devUrlTable);
