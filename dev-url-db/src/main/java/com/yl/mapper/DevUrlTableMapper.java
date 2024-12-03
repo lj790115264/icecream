@@ -13,7 +13,7 @@ import org.apache.ibatis.annotations.Select;
 public interface DevUrlTableMapper {
 
 
-    @Select("select count(a) as c from DEV_URL_TABLE where uri = #{uri} and tables = #{tables}")
+    @Select("select count(1) as c from DEV_URL_TABLE where uri = #{uri} and tables = #{tables}")
     int count(@Param("uri") String uri, @Param("tables") String tables);
 
     @Insert("insert into DEV_URL_TABLE (id, uri, tables, create_time, cross_path) values (#{id}, #{uri}, #{createTime}, #{crossPath} )")
