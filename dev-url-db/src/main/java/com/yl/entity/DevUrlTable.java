@@ -1,6 +1,7 @@
 package com.yl.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.KeySequence;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  */
 @Data
 @TableName("DEV_URL_TABLE")
+@KeySequence(value = "DEV_URL_INC", clazz = Long.class)
 public class DevUrlTable {
 
     @TableId(value = "id", type = IdType.INPUT)

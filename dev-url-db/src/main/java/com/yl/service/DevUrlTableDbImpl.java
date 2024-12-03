@@ -61,7 +61,6 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
     public void save(String uri, String table, String crossPath) {
 
         DevUrlTable devUrlTable = new DevUrlTable();
-        devUrlTable.setId(idGenerator.generate());
         devUrlTable.setUri(uri);
         devUrlTable.setTables(table);
         devUrlTable.setCrossPath(crossPath);
