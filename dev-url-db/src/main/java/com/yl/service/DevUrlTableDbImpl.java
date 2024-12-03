@@ -1,6 +1,6 @@
 package com.yl.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yl.DevUrlFilter;
 import com.yl.JsonUtil;
 import com.yl.entity.DevUrlTable;
@@ -61,8 +61,8 @@ public class DevUrlTableDbImpl implements DevUrlTableService {
         devUrlTable.setCrossPath(crossPath);
         devUrlTable.setCreateTime(LocalDateTime.now());
         Number count = devUrlTableMapper
-                .selectCount(new LambdaQueryWrapper<DevUrlTable>().eq(DevUrlTable::getUri, uri)
-                        .eq(DevUrlTable::getTables, table));
+                .selectCount(new QueryWrapper<DevUrlTable>().eq("uri", uri)
+                        .eq("tables", table));
         log.info("devUrlTable {} count {}", devUrlTable, count);
         if (count.equals(0)) {
             devUrlTableMapper.insert(devUrlTable);
