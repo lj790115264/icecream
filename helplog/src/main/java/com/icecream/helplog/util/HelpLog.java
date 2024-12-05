@@ -37,7 +37,7 @@ import java.util.function.Supplier;
 @Slf4j
 public class HelpLog {
 
-    public static String traceId = "lanjtraceId";
+    public static String traceId = "helptraceId";
 
     private static ThreadLocal<LogObj> logLocal = ThreadLocal.withInitial(() -> {
         String uuid = RandomUtil.randomString(6);
